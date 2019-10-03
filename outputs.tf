@@ -7,7 +7,7 @@ output "subnets_cidr" {
 }
 
 output "subnet_id" {
-  value = "${aws_subnet.this.id}"
+  value = "${aws_subnet.this.*.id}"
 }
 
 output "nat_gw_id" {

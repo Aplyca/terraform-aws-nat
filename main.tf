@@ -44,7 +44,7 @@ resource "aws_subnet" "this" {
 # ---------------------------------------------
 resource "aws_nat_gateway" "this" {
   allocation_id = "${aws_eip.this.id}"
-  subnet_id     = "${aws_subnet.this.id}"
+  subnet_id     = "${aws_subnet.this.0.id}"
 
   tags = {
     Name = "NAT GEB"
@@ -55,7 +55,7 @@ resource "aws_nat_gateway" "this" {
 # Associate 
 # ---------------------------------------------
 resource "aws_route_table_association" "this" {
-  subnet_id         = "${aws_subnet.this.id}"
+  subnet_id         = "${aws_subnet.this.0.id}"
   route_table_id = "${aws_route_table.this.id}"
 }
 
@@ -63,7 +63,7 @@ resource "aws_route_table_association" "this" {
 # Network ACL Web Access
 resource "aws_network_acl" "this" {
     vpc_id = "${var.vpc_id}"
-    subnet_ids = ["${aws_subnet.this.id}"]
+    subnet_ids = ["${aws_subnet.this.0.id}"]
     tags = "${merge(var.tags, map("Name", "${var.name} ${var.env} ACL"),map("Description", "Use a Custom ACL to avoid adding the NAT Subnet to the Default ACL."))}"
 }
 
